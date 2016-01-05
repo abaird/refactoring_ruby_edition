@@ -20,3 +20,6 @@ Style/NumericLiterals:
 # Configuration parameters: Exclude.
 Style/FileName:
   Enabled: false
+
+Documentation:
+  Enabled: false
