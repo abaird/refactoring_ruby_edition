@@ -36,17 +36,7 @@ class Customer
     frequent_renter_points = 0
     result = "Rental Record for #{@name}\n"
     @rentals.each do |element|
-      this_amount = 0
-
-      # determine amounts for each line
-      case element.movie.price_code
-      when Movie::REGULAR
-        this_amount += 2
-        this_amount += (element.days_rented - 2) * 1.5 if element.days_rented > 2
-      when Movie::NEW_RELEASE
-        this_amount += 1.5
-        this_amount += (element.days_rented - 3) * 1.5 if element.days_rented > 3
-      end
+      price = price_per_rental(element)
 
       # add frequent renter points
       frequent_renter_points += 1
@@ -56,13 +46,26 @@ class Customer
       end
 
       # show figures for this rental
-      result += "\t" + element.movie.title + "\t" + this_amount.to_s + "\n"
-      total_amount += this_amount
+      result += "\t" + element.movie.title + "\t" + price.to_s + "\n"
+      total_amount += price
     end
 
     # add footer lines
     result += "Amount owed is #{total_amount}\n"
     result += "You earned #{frequent_renter_points} frequent renter points"
     result
+  end
+
+  def price_per_rental(rental)
+    price = 0
+    case rental.movie.price_code
+    when Movie::REGULAR
+      price += 2
+      price += (rental.days_rented - 2) * 1.5 if rental.days_rented > 2
+    when Movie::NEW_RELEASE
+      price += 1.5
+      price += (rental.days_rented - 3) * 1.5 if rental.days_rented > 3
+    end
+    price
   end
 end

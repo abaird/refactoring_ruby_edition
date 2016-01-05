@@ -23,6 +23,7 @@ describe 'Video Store App' do
     let(:regular_movie) { Movie.new('Regular Movie', 0) }
     let(:new_release_movie) { Movie.new('New Release', 1) }
     let(:childrens_movie) { Movie.new('Childrens Movie', 2) }
+    let(:one_day_rental_regular) { Rental.new(regular_movie, 1) }
     let(:two_day_rental_regular) { Rental.new(regular_movie, 2) }
     let(:three_day_rental_regular) { Rental.new(regular_movie, 3) }
     let(:one_day_rental_new_release) { Rental.new(new_release_movie, 1) }
