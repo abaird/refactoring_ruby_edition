@@ -1,0 +1,22 @@
+#require: rubocop-rspec
+
+Metrics/LineLength:
+  Max: 100
+
+Style/HashSyntax:
+  Severity: warning
+
+#RSpec/DescribeClass:
+#  Enabled: false
+
+Style/DotPosition:
+  EnforcedStyle: trailing
+
+Style/NumericLiterals:
+  Enabled: false
+
+# bug: https://github.com/AtomLinter/linter-rubocop/issues/2
+# Offense count: 1
+# Configuration parameters: Exclude.
+Style/FileName:
+  Enabled: false

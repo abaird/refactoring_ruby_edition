@@ -1,9 +1,6 @@
 require 'rspec/core/rake_task'
 
-task :default => :spec
+task default: :spec
 
-RSpec::Core::RakeTask.new(:spec) do |t|
-    t.pattern = 'spec/refactoring_ruby_edition_spec.rb'
+RSpec::Core::RakeTask.new(:spec) do |_t|
 end
-
-
