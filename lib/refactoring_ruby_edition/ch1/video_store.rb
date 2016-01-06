@@ -57,6 +57,24 @@ class Rental
   end
 end
 
+class Rentals
+  attr_accessor :total_amount, :frequent_renter_points
+  def initialize(rentals)
+    @total_amount = 0
+    @frequent_renter_points = 0
+    @rentals = rentals
+  end
+
+  def process_collection(&block)
+    @rentals.each do |rental|
+      price = rental.movie.price(rental.days_rented)
+      @frequent_renter_points += rental.movie.frequent_renter_points(rental.days_rented)
+      block.call(rental.movie.title, price)
+      @total_amount += price
+    end
+  end
+end
+
 class Customer
   def initialize(name)
     @name = name
@@ -68,18 +86,10 @@ class Customer
   end
 
   def statement
-    total_amount = 0
-    frequent_renter_points = 0
     text_report = TextReport.new(@name)
-    @rentals.each do |rental|
-      price = rental.movie.price(rental.days_rented)
-      frequent_renter_points += rental.movie.frequent_renter_points(rental.days_rented)
-
-      text_report.add_individual_rental(rental.movie.title, price)
-      total_amount += price
-    end
-
-    text_report.report(total_amount, frequent_renter_points)
+    my_rentals = Rentals.new(@rentals)
+    my_rentals.process_collection { |title, price| text_report.add_individual_rental(title, price) }
+    text_report.report(my_rentals.total_amount, my_rentals.frequent_renter_points)
   end
 end
 
