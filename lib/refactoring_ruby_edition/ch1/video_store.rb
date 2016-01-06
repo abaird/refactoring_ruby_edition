@@ -36,12 +36,18 @@ end
 
 module NewReleasePricing
   def price(days_rented)
-    days_rented > 3 ? (1.5 + (days_rented - 3) * 1.5) : 1.5
+    days_rented * 3
   end
 
   def frequent_renter_points(days_rented)
     # add bonus for a two day new release rental
     days_rented > 1 ? 2 : 1
+  end
+end
+
+module ChildrensPricing
+  def price(days_rented)
+    days_rented > 3 ? (1.5 + (days_rented - 3) * 1.5) : 1.5
   end
 end
 

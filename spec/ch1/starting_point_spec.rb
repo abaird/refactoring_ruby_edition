@@ -67,26 +67,27 @@ describe 'Video Store App' do
       expect(customer.statement).to match(/1 frequent renter points/)
     end
 
-    it 'new releases rented more than 3 days are at a higer rate' do
+    it 'new releases are charged at 3 times the number of days rented' do
       customer.add_rental(five_day_rental_new_release)
       expect(customer.statement).to match('Rental Record for Alan')
-      expect(customer.statement).to match(/New Release\s+4\.5$/)
-      expect(customer.statement).to match(/owed is 4\.5$/)
+      expect(customer.statement).to match(/New Release\s+15$/)
+      expect(customer.statement).to match(/owed is 15$/)
       expect(customer.statement).to match(/2 frequent renter points/)
     end
 
-    it 'new releases rented less than 3 days are $1.50' do
+    it 'new releases are charged at 3 times the number of days rented (v2)' do
       customer.add_rental(two_day_rental_new_release)
       expect(customer.statement).to match('Rental Record for Alan')
-      expect(customer.statement).to match(/New Release\s+1\.5$/)
-      expect(customer.statement).to match(/owed is 1\.5$/)
+      expect(customer.statement).to match(/New Release\s+6$/)
+      expect(customer.statement).to match(/owed is 6$/)
+      expect(customer.statement).to match(/2 frequent renter points/)
     end
 
     it 'frequent renter points get a bonus point for new releases' do
       customer.add_rental(two_day_rental_new_release)
       expect(customer.statement).to match('Rental Record for Alan')
-      expect(customer.statement).to match(/New Release\s+1\.5$/)
-      expect(customer.statement).to match(/owed is 1\.5$/)
+      expect(customer.statement).to match(/New Release\s+6$/)
+      expect(customer.statement).to match(/owed is 6$/)
       expect(customer.statement).to match(/2 frequent renter points/)
     end
 
@@ -106,8 +107,8 @@ describe 'Video Store App' do
       expect(customer.statement).to match('Rental Record for Alan')
       expect(customer.statement).to match(/Childrens Movie\s+0$/)
       expect(customer.statement).to match(/Regular Movie\s+2$/)
-      expect(customer.statement).to match(/New Release\s+1\.5$/)
-      expect(customer.statement).to match(/owed is 3\.5$/)
+      expect(customer.statement).to match(/New Release\s+3$/)
+      expect(customer.statement).to match(/owed is 5$/)
       expect(customer.statement).to match(/3 frequent renter points/)
     end
   end
