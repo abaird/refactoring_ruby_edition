@@ -9,26 +9,51 @@ class Movie
   def initialize(title, price_code)
     @title = title
     @price_code = price_code
+    case @price_code
+    when 0
+      extend RegularPricing
+    when 1
+      extend NewReleasePricing
+    when 2
+      extend ChildrensPricing
+    end
+  end
+end
+
+module RegularPricing
+  def price(days_rented)
+    price = 2
+    price += (days_rented - 2) * 1.5 if days_rented > 2
+    price
   end
 
+  def frequent_renter_points(_days_rented)
+    1
+  end
+end
+
+module NewReleasePricing
   def price(days_rented)
-    price = 0
-    case @price_code
-    when REGULAR
-      price += 2
-      price += (days_rented - 2) * 1.5 if days_rented > 2
-    when NEW_RELEASE
-      price += 1.5
-      price += (days_rented - 3) * 1.5 if days_rented > 3
-    end
+    price = 1.5
+    price += (days_rented - 3) * 1.5 if days_rented > 3
     price
   end
 
   def frequent_renter_points(days_rented)
     frequent_renter_points = 1
     # add bonus for a two day new release rental
-    frequent_renter_points += 1 if @price_code == NEW_RELEASE && days_rented > 1
+    frequent_renter_points += 1 if days_rented > 1
     frequent_renter_points
+  end
+end
+
+module ChildrensPricing
+  def price(_days_rented)
+    0
+  end
+
+  def frequent_renter_points(_days_rented)
+    1
   end
 end
 
