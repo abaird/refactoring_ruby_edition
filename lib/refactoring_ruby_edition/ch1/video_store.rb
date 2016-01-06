@@ -34,20 +34,16 @@ class Customer
   def statement
     total_amount = 0
     frequent_renter_points = 0
-    result = "Rental Record for #{@name}\n"
+    text_report = TextReport.new(@name)
     @rentals.each do |element|
       price = price_per_rental(element)
       frequent_renter_points += add_frequent_renter_points(element)
 
-      # show figures for this rental
-      result += "\t" + element.movie.title + "\t" + price.to_s + "\n"
+      text_report.add_individual_rental(element.movie.title, price)
       total_amount += price
     end
 
-    # add footer lines
-    result += "Amount owed is #{total_amount}\n"
-    result += "You earned #{frequent_renter_points} frequent renter points"
-    result
+    text_report.report(total_amount, frequent_renter_points)
   end
 
   def price_per_rental(rental)
@@ -70,5 +66,22 @@ class Customer
       frequent_renter_points += 1
     end
     frequent_renter_points
+  end
+end
+
+class TextReport
+  attr_reader :name
+  def initialize(name)
+    @name = name
+    @result = "Rental Record for #{@name}"
+  end
+
+  def add_individual_rental(title, price)
+    @result += "\t" + title + "\t" + price.to_s + "\n"
+  end
+
+  def report(total_amount, frequent_renter_points)
+    @result += "Amount owed is #{total_amount}\n"
+    @result += "You earned #{frequent_renter_points} frequent renter points"
   end
 end
