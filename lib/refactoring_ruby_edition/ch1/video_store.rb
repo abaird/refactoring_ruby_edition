@@ -10,6 +10,19 @@ class Movie
     @title = title
     @price_code = price_code
   end
+
+  def price(days_rented)
+    price = 0
+    case @price_code
+    when REGULAR
+      price += 2
+      price += (days_rented - 2) * 1.5 if days_rented > 2
+    when NEW_RELEASE
+      price += 1.5
+      price += (days_rented - 3) * 1.5 if days_rented > 3
+    end
+    price
+  end
 end
 
 class Rental
@@ -36,7 +49,7 @@ class Customer
     frequent_renter_points = 0
     text_report = TextReport.new(@name)
     @rentals.each do |element|
-      price = price_per_rental(element)
+      price = element.movie.price(element.days_rented)
       frequent_renter_points += add_frequent_renter_points(element)
 
       text_report.add_individual_rental(element.movie.title, price)
@@ -44,19 +57,6 @@ class Customer
     end
 
     text_report.report(total_amount, frequent_renter_points)
-  end
-
-  def price_per_rental(rental)
-    price = 0
-    case rental.movie.price_code
-    when Movie::REGULAR
-      price += 2
-      price += (rental.days_rented - 2) * 1.5 if rental.days_rented > 2
-    when Movie::NEW_RELEASE
-      price += 1.5
-      price += (rental.days_rented - 3) * 1.5 if rental.days_rented > 3
-    end
-    price
   end
 
   def add_frequent_renter_points(rental)
