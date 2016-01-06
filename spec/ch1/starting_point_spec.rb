@@ -91,12 +91,19 @@ describe 'Video Store App' do
       expect(customer.statement).to match(/2 frequent renter points/)
     end
 
-    # also tests that childrens movies are free
-    it 'only one frequent renter point for regular and childrens releases' do
+    it 'complicated formula for childrens releases over 3 days' do
       customer.add_rental(five_day_rental_childrens)
       expect(customer.statement).to match('Rental Record for Alan')
-      expect(customer.statement).to match(/Childrens Movie\s+0$/)
-      expect(customer.statement).to match(/owed is 0$/)
+      expect(customer.statement).to match(/Childrens Movie\s+4\.5$/)
+      expect(customer.statement).to match(/owed is 4\.5$/)
+      expect(customer.statement).to match(/1 frequent renter points/)
+    end
+
+    it '$1.5 for childrens releases less than 3 days' do
+      customer.add_rental(one_day_rental_childrens)
+      expect(customer.statement).to match('Rental Record for Alan')
+      expect(customer.statement).to match(/Childrens Movie\s+1\.5$/)
+      expect(customer.statement).to match(/owed is 1\.5$/)
       expect(customer.statement).to match(/1 frequent renter points/)
     end
 
@@ -105,10 +112,10 @@ describe 'Video Store App' do
       customer.add_rental(one_day_rental_new_release)
       customer.add_rental(one_day_rental_regular)
       expect(customer.statement).to match('Rental Record for Alan')
-      expect(customer.statement).to match(/Childrens Movie\s+0$/)
+      expect(customer.statement).to match(/Childrens Movie\s+1\.5$/)
       expect(customer.statement).to match(/Regular Movie\s+2$/)
       expect(customer.statement).to match(/New Release\s+3$/)
-      expect(customer.statement).to match(/owed is 5$/)
+      expect(customer.statement).to match(/owed is 6\.5$/)
       expect(customer.statement).to match(/3 frequent renter points/)
     end
   end

@@ -15,7 +15,7 @@ class Movie
     when 1
       extend NewReleasePricing
     when 2
-      # use defaults
+      extend ChildrensPricing
     end
   end
 
