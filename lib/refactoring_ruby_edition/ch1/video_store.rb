@@ -86,17 +86,15 @@ class Customer
   end
 
   def statement
-    text_report = TextReport.new(@name)
-    my_rentals = Rentals.new(@rentals)
-    my_rentals.process_collection { |title, price| text_report.add_individual_rental(title, price) }
-    text_report.report(my_rentals.total_amount, my_rentals.frequent_renter_points)
+    TextReport.new(@name, @rentals).report
   end
 end
 
 class TextReport
   attr_reader :name
-  def initialize(name)
+  def initialize(name, rentals)
     @name = name
+    @rentals = Rentals.new(rentals)
     @result = "Rental Record for #{@name}"
   end
 
@@ -104,8 +102,9 @@ class TextReport
     @result += "\t" + title + "\t" + price.to_s + "\n"
   end
 
-  def report(total_amount, frequent_renter_points)
-    @result += "Amount owed is #{total_amount}\n"
-    @result += "You earned #{frequent_renter_points} frequent renter points"
+  def report
+    @rentals.process_collection { |title, price| add_individual_rental(title, price) }
+    @result += "Amount owed is #{@rentals.total_amount}\n"
+    @result += "You earned #{@rentals.frequent_renter_points} frequent renter points"
   end
 end
