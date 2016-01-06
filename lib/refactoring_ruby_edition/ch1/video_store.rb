@@ -15,8 +15,16 @@ class Movie
     when 1
       extend NewReleasePricing
     when 2
-      extend ChildrensPricing
+      # use defaults
     end
+  end
+
+  def price(_days_rented)
+    0
+  end
+
+  def frequent_renter_points(_days_rented)
+    1
   end
 end
 
@@ -25,10 +33,6 @@ module RegularPricing
     price = 2
     price += (days_rented - 2) * 1.5 if days_rented > 2
     price
-  end
-
-  def frequent_renter_points(_days_rented)
-    1
   end
 end
 
@@ -44,16 +48,6 @@ module NewReleasePricing
     # add bonus for a two day new release rental
     frequent_renter_points += 1 if days_rented > 1
     frequent_renter_points
-  end
-end
-
-module ChildrensPricing
-  def price(_days_rented)
-    0
-  end
-
-  def frequent_renter_points(_days_rented)
-    1
   end
 end
 
