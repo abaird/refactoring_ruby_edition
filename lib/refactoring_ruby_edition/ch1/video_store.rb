@@ -23,6 +23,13 @@ class Movie
     end
     price
   end
+
+  def frequent_renter_points(days_rented)
+    frequent_renter_points = 1
+    # add bonus for a two day new release rental
+    frequent_renter_points += 1 if @price_code == NEW_RELEASE && days_rented > 1
+    frequent_renter_points
+  end
 end
 
 class Rental
@@ -50,22 +57,13 @@ class Customer
     text_report = TextReport.new(@name)
     @rentals.each do |element|
       price = element.movie.price(element.days_rented)
-      frequent_renter_points += add_frequent_renter_points(element)
+      frequent_renter_points += element.movie.frequent_renter_points(element.days_rented)
 
       text_report.add_individual_rental(element.movie.title, price)
       total_amount += price
     end
 
     text_report.report(total_amount, frequent_renter_points)
-  end
-
-  def add_frequent_renter_points(rental)
-    frequent_renter_points = 1
-    # add bonus for a two day new release rental
-    if rental.movie.price_code == Movie::NEW_RELEASE && rental.days_rented > 1
-      frequent_renter_points += 1
-    end
-    frequent_renter_points
   end
 end
 
