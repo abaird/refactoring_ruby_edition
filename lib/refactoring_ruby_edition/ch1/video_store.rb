@@ -71,11 +71,11 @@ class Customer
     total_amount = 0
     frequent_renter_points = 0
     text_report = TextReport.new(@name)
-    @rentals.each do |element|
-      price = element.movie.price(element.days_rented)
-      frequent_renter_points += element.movie.frequent_renter_points(element.days_rented)
+    @rentals.each do |rental|
+      price = rental.movie.price(rental.days_rented)
+      frequent_renter_points += rental.movie.frequent_renter_points(rental.days_rented)
 
-      text_report.add_individual_rental(element.movie.title, price)
+      text_report.add_individual_rental(rental.movie.title, price)
       total_amount += price
     end
 
