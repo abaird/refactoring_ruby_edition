@@ -98,7 +98,7 @@ class TextReport
   def initialize(name, rentals)
     @name = name
     @rentals = Rentals.new(rentals)
-    @result = "Rental Record for #{@name}"
+    @result = "Rental Record for #{@name}\n"
   end
 
   def add_individual_rental(title, price)
